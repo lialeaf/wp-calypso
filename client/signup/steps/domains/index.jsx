@@ -63,6 +63,7 @@ class DomainsStep extends React.Component {
 		flowName: PropTypes.string.isRequired,
 		goToNextStep: PropTypes.func.isRequired,
 		isDomainOnly: PropTypes.bool.isRequired,
+		isSiteless: PropTypes.bool,
 		locale: PropTypes.string,
 		path: PropTypes.string.isRequired,
 		positionInFlow: PropTypes.number.isRequired,
@@ -288,7 +289,12 @@ class DomainsStep extends React.Component {
 				},
 				this.getThemeArgs()
 			),
-			Object.assign( { domainItem }, shouldHideFreePlanItem, useThemeHeadstartItem )
+			{
+				domainItem,
+				...( this.props.isSiteless && { siteId: null, siteSlug: 'no-site' } ),
+				...shouldHideFreePlanItem,
+				...useThemeHeadstartItem,
+			}
 		);
 
 		this.props.setDesignType( this.getDesignType() );
@@ -320,7 +326,11 @@ class DomainsStep extends React.Component {
 				},
 				this.getThemeArgs()
 			),
-			Object.assign( { domainItem }, useThemeHeadstartItem )
+			{
+				domainItem,
+				...( this.props.isSiteless && { siteId: null, siteSlug: 'no-site' } ),
+				...useThemeHeadstartItem,
+			}
 		);
 
 		this.props.goToNextStep();
@@ -354,7 +364,11 @@ class DomainsStep extends React.Component {
 				},
 				this.getThemeArgs()
 			),
-			Object.assign( { domainItem }, useThemeHeadstartItem )
+			{
+				domainItem,
+				...( this.props.isSiteless && { siteId: null, siteSlug: 'no-site' } ),
+				...useThemeHeadstartItem,
+			}
 		);
 
 		this.props.goToNextStep();
