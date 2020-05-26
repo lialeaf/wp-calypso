@@ -481,7 +481,7 @@ function StripePayButton( { disabled, store, stripe, stripeConfiguration } ) {
 							}
 							if ( stripeResponse?.redirect_url ) {
 								debug( 'stripe transaction requires redirect' );
-								setTransactionRedirecting( stripeResponse );
+								setTransactionRedirecting( stripeResponse.redirect_url );
 								return;
 							}
 							debug( 'stripe transaction is successful' );
