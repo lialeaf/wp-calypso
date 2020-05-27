@@ -26,6 +26,7 @@ export default function WPCheckoutOrderReview( {
 	getItemVariants,
 	onChangePlanLength,
 	siteUrl,
+	isWhiteGloveOffer,
 } ) {
 	const translate = useTranslate();
 	const [ items, total ] = useLineItems();
@@ -48,6 +49,7 @@ export default function WPCheckoutOrderReview( {
 					variantSelectOverride={ variantSelectOverride }
 					getItemVariants={ getItemVariants }
 					onChangePlanLength={ onChangePlanLength }
+					isWhiteGloveOffer={ isWhiteGloveOffer }
 				/>
 			</WPOrderReviewSection>
 

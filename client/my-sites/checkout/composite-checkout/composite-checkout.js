@@ -112,6 +112,7 @@ export default function CompositeCheckout( {
 	purchaseId,
 	cart,
 	couponCode: couponCodeFromUrl,
+	isWhiteGloveOffer,
 } ) {
 	const translate = useTranslate();
 	const isJetpackNotAtomic = useSelector(
@@ -458,6 +459,7 @@ export default function CompositeCheckout( {
 					subtotal={ subtotal }
 					isCartPendingUpdate={ isCartPendingUpdate }
 					CheckoutTerms={ CheckoutTerms }
+					isWhiteGloveOffer={ isWhiteGloveOffer }
 				/>
 			</CheckoutProvider>
 		</React.Fragment>
