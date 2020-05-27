@@ -16,6 +16,7 @@ import TransferDomainStep from 'components/domains/transfer-domain-step';
 import UseYourDomainStep from 'components/domains/use-your-domain-step';
 import RegisterDomainStep from 'components/domains/register-domain-step';
 import { getStepUrl } from 'signup/utils';
+import { isSitelessCheckoutEnabledForFlow } from 'signup/siteless';
 import StepWrapper from 'signup/step-wrapper';
 import {
 	domainRegistration,
@@ -291,7 +292,7 @@ class DomainsStep extends React.Component {
 			),
 			{
 				domainItem,
-				...( this.props.isSiteless && { siteId: null, siteSlug: 'no-site' } ),
+				...( this.isSiteless() && { siteId: null, siteSlug: 'no-site' } ),
 				...shouldHideFreePlanItem,
 				...useThemeHeadstartItem,
 			}
@@ -302,6 +303,11 @@ class DomainsStep extends React.Component {
 
 		// Start the username suggestion process.
 		siteUrl && this.props.fetchUsernameSuggestion( siteUrl.split( '.' )[ 0 ] );
+	};
+
+	isSiteless = () => {
+		const { flowName, lastKnownFlow } = this.props;
+		return isSitelessCheckoutEnabledForFlow( flowName || lastKnownFlow );
 	};
 
 	handleAddMapping = ( sectionName, domain, state ) => {
@@ -328,7 +334,7 @@ class DomainsStep extends React.Component {
 			),
 			{
 				domainItem,
-				...( this.props.isSiteless && { siteId: null, siteSlug: 'no-site' } ),
+				...( this.isSiteless() && { siteId: null, siteSlug: 'no-site' } ),
 				...useThemeHeadstartItem,
 			}
 		);
@@ -366,7 +372,7 @@ class DomainsStep extends React.Component {
 			),
 			{
 				domainItem,
-				...( this.props.isSiteless && { siteId: null, siteSlug: 'no-site' } ),
+				...( this.isSiteless() && { siteId: null, siteSlug: 'no-site' } ),
 				...useThemeHeadstartItem,
 			}
 		);
