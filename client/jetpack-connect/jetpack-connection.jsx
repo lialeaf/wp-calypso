@@ -12,13 +12,14 @@ import { localize } from 'i18n-calypso';
  * Internal dependencies
  */
 import HelpButton from './help-button';
+import JetpackConnectNotices from './jetpack-connect-notices';
 import LoggedOutFormLinkItem from 'components/logged-out-form/link-item';
 import LoggedOutFormLinks from 'components/logged-out-form/links';
 import page from 'page';
 import versionCompare from 'lib/version-compare';
 import { addCalypsoEnvQueryArg } from './utils';
 import { addQueryArgs, externalRedirect } from 'lib/route';
-import { checkUrl } from 'state/jetpack-connect/actions';
+import { checkUrl, dismissUrl } from 'state/jetpack-connect/actions';
 import { FLOW_TYPES } from 'state/jetpack-connect/constants';
 import { getConnectingSite, getJetpackSiteByUrl } from 'state/jetpack-connect/selectors';
 import { getCurrentUserId } from 'state/current-user/selectors';
@@ -67,6 +68,24 @@ const jetpackConnection = ( WrappedComponent ) => {
 					<HelpButton />
 				</LoggedOutFormLinks>
 			);
+		};
+
+		dismissUrl = () => this.props.dismissUrl( this.state.currentUrl );
+
+		goBack = () => page.back();
+
+		renderNotices = () => {
+			return ! this.isCurrentUrlFetching() &&
+				this.isCurrentUrlFetched() &&
+				! this.props.jetpackConnectSite.isDismissed &&
+				this.state.status ? (
+				<JetpackConnectNotices
+					noticeType={ this.state.status }
+					onDismissClick={ IS_DOT_COM === this.state.status ? this.goBack : this.dismissUrl }
+					url={ this.state.currentUrl }
+					onTerminalError={ this.props.isMobileAppFlow ? this.redirectToMobileApp : null }
+				/>
+			) : null;
 		};
 
 		processJpSite = ( url ) => {
@@ -275,6 +294,8 @@ const jetpackConnection = ( WrappedComponent ) => {
 					processJpSite={ this.processJpSite }
 					status={ this.state.status }
 					renderFooter={ this.renderFooter }
+					renderNotices={ this.renderNotices }
+					isCurrentUrlFetching={ this.isCurrentUrlFetching }
 				/>
 			);
 		}
@@ -304,6 +325,7 @@ const jetpackConnection = ( WrappedComponent ) => {
 		},
 		{
 			checkUrl,
+			dismissUrl,
 			recordTracksEvent,
 		}
 	);
